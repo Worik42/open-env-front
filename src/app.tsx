@@ -45,7 +45,7 @@ export default class App extends Component {
               <Route path='/login' component={LoginPage} />
               <Route path='/createUser' component={CreateUserPage} />
               <PrivateRoute component={Dashboard} path="/dashboard" />
-              <Redirect path='*' to={'/login'} />
+              <Redirect path='*' to={'/dashboard'} />
             </Switch>
           </Main>
         </ConnectedRouter>
