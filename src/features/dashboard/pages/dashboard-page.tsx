@@ -83,7 +83,7 @@ class Dashboard extends Component<IDashboard> {
                     <FormContainer>
                         <TextField id="standard-basic" onChange={this.handlerName} label="Введите название организации/мероприятия" variant="standard" />
 
-                        <TextField id="filled-basic" onChange={this.handlerPositionLat} label="Введите ширину" variant="standard" />
+                        <TextField id="filled-basic" onChange={this.handlerPositionLat} label="Введите широту" variant="standard" />
 
                         <TextField id="outlined-basic" onChange={this.handlerPositionLon} label="Введите долготу" variant="standard" />
                         <TextField id="outlined-basic" onChange={this.handlerDescription} label="Введите описание организации/мероприятия" variant="standard" />
