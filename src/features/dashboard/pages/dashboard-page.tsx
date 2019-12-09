@@ -54,6 +54,18 @@ class Dashboard extends Component<IDashboard> {
         this.setState({ name: value.target.value })
     }
 
+    private handlerPositionLat = (value: any) => {
+        this.setState({ name: value.target.value })
+    }
+
+    private handlerPositionLon = (value: any) => {
+        this.setState({ name: value.target.value })
+    }
+
+    private handlerDescription = (value: any) => {
+        this.setState({ name: value.target.value })
+    }
+
 
 
     public render(): JSX.Element {
@@ -71,10 +83,10 @@ class Dashboard extends Component<IDashboard> {
                     <FormContainer>
                         <TextField id="standard-basic" onChange={this.handlerName} label="Введите название организации/мероприятия" variant="standard" />
 
-                        <TextField id="filled-basic" label="Введите ширину" variant="standard" />
+                        <TextField id="filled-basic" onChange={this.handlerPositionLat} label="Введите ширину" variant="standard" />
 
-                        <TextField id="outlined-basic" label="Введите долготу" variant="standard" />
-                        <TextField id="outlined-basic" label="Введите описание организации/мероприятия" variant="standard" />
+                        <TextField id="outlined-basic" onChange={this.handlerPositionLon} label="Введите долготу" variant="standard" />
+                        <TextField id="outlined-basic" onChange={this.handlerDescription} label="Введите описание организации/мероприятия" variant="standard" />
                     </FormContainer>
                     <SubmitButton onClick={this.submit} variant="outlined">
                         Создать
