@@ -48,7 +48,7 @@ class Dashboard extends Component<IDashboard> {
         lat: 0,
         desc: '',
         isOpenDrawer: false,
-        selectedItem: 1
+        selectedItem: 0
     };
 
     public componentDidMount() { }
@@ -122,7 +122,9 @@ class Dashboard extends Component<IDashboard> {
                     <SubmitButton onClick={this.submit} variant="outlined">
                         Создать
                 </SubmitButton>
-                </ContainerContent>}
+                </ContainerContent>
+                }
+                {this.state.selectedItem === 0 && <ContainerContent></ContainerContent>}
 
 
             </Container>
