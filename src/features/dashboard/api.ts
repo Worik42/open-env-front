@@ -12,9 +12,8 @@ export const createOrganisation = async (
       method: 'POST',
       body: JSON.stringify({
         name,
-        positionLat,
-        positionLon,
-        description,
+        position: [{latitude: positionLat , longitude: positionLon }],
+        description: [ description ],
       })
     });
 
