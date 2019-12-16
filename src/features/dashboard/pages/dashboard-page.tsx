@@ -7,16 +7,66 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { createOrganisation } from '../api'
+
 const Container = styled('div')`
 `;
+
+const FormContainer = styled('div')`
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+`
+
+const ContainerContent = styled('div')`
+width: 100%;
+height: 100%;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+margin-top: 25px;
+`
+
+const SubmitButton = styled(Button)`
+margin-top: 25px !important;
+`
 
 declare interface IDashboard {
 }
 
 class Dashboard extends Component<IDashboard> {
-    state = {};
+    state = {
+        name: '',
+        lon: 0,
+        lat: 0,
+        desc: ''
+    };
 
     public componentDidMount() { }
+
+    private submit = () => {
+        const { desc, lat, lon, name } = this.state
+        createOrganisation(name, lat, lon, desc).then((res) => {})
+    }
+
+    private handlerName = (value: any) => {
+        this.setState({ name: value.target.value })
+    }
+
+    private handlerPositionLat = (value: any) => {
+        this.setState({ name: value.target.value })
+    }
+
+    private handlerPositionLon = (value: any) => {
+        this.setState({ name: value.target.value })
+    }
+
+    private handlerDescription = (value: any) => {
+        this.setState({ name: value.target.value })
+    }
+
+
 
     public render(): JSX.Element {
         return (
@@ -25,20 +75,23 @@ class Dashboard extends Component<IDashboard> {
                     <Toolbar>
                         <Typography variant="h6">
                             OpenEnv
-                            
                         </Typography>
                     </Toolbar>
                 </AppBar>
-                <br /><br /> <p><big> Создание организации: </big></p>
-                <TextField id="standard-basic" label="Введите название организации/мероприятия" variant="outlined" />
-                <br /><br />
-                <TextField id="filled-basic" label="Введите ширину" variant="outlined" />
-                <br /><br />
-                <TextField id="outlined-basic" label="Введите долготу" variant="outlined" /><br /><br />
-                <TextField id="outlined-basic" label="Введите описание организации/мероприятия" variant="outlined" /><br /><br />
-                <Button variant="outlined">
-                    Создать
-                </Button><br /><br />
+                <ContainerContent>
+                    <Typography> Создание организации:</Typography>
+                    <FormContainer>
+                        <TextField id="standard-basic" onChange={this.handlerName} label="Введите название организации/мероприятия" variant="standard" />
+
+                        <TextField id="filled-basic" onChange={this.handlerPositionLat} label="Введите широту" variant="standard" />
+
+                        <TextField id="outlined-basic" onChange={this.handlerPositionLon} label="Введите долготу" variant="standard" />
+                        <TextField id="outlined-basic" onChange={this.handlerDescription} label="Введите описание организации/мероприятия" variant="standard" />
+                    </FormContainer>
+                    <SubmitButton onClick={this.submit} variant="outlined">
+                        Создать
+                </SubmitButton>
+                </ContainerContent>
             </Container>
         );
     }
