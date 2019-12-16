@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
-import { Global, css } from '@emotion/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import IconButton from '@material-ui/core/IconButton';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+
 import { createOrganisation } from '../api'
 
 const Container = styled('div')`
@@ -40,14 +46,16 @@ class Dashboard extends Component<IDashboard> {
         name: '',
         lon: 0,
         lat: 0,
-        desc: ''
+        desc: '',
+        isOpenDrawer: false,
+        selectedItem: 1
     };
 
     public componentDidMount() { }
 
     private submit = () => {
         const { desc, lat, lon, name } = this.state
-        createOrganisation(name, lat, lon, desc).then((res) => {})
+        createOrganisation(name, lat, lon, desc).then((res) => { })
     }
 
     private handlerName = (value: any) => {
@@ -66,6 +74,17 @@ class Dashboard extends Component<IDashboard> {
         this.setState({ name: value.target.value })
     }
 
+    private closeDrawer = () => {
+        this.setState({ isOpenDrawer: false })
+    }
+
+    private openDrawer = () => {
+        this.setState({ isOpenDrawer: true })
+    }
+
+    private handleChangeMenu = (id: number) => {
+        this.setState({ selectedItem: id })
+    }
 
 
     public render(): JSX.Element {
@@ -73,12 +92,24 @@ class Dashboard extends Component<IDashboard> {
             <Container>
                 <AppBar position="static">
                     <Toolbar>
+                        <IconButton edge="start" color="inherit" onClick={this.openDrawer} aria-label="menu">
+                            <MenuIcon />
+                        </IconButton>
                         <Typography variant="h6">
                             OpenEnv
                         </Typography>
                     </Toolbar>
                 </AppBar>
-                <ContainerContent>
+                <Drawer open={this.state.isOpenDrawer} onClose={this.closeDrawer}>
+                    <List>
+                        {['Карта', 'Создать организацию'].map((text, index) => (
+                            <ListItem selected={index === this.state.selectedItem} onClick={() => this.handleChangeMenu(index)} button key={text}>
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        ))}
+                    </List>
+                </Drawer>
+                {this.state.selectedItem === 1 && <ContainerContent>
                     <Typography> Создание организации:</Typography>
                     <FormContainer>
                         <TextField id="standard-basic" onChange={this.handlerName} label="Введите название организации/мероприятия" variant="standard" />
@@ -91,7 +122,9 @@ class Dashboard extends Component<IDashboard> {
                     <SubmitButton onClick={this.submit} variant="outlined">
                         Создать
                 </SubmitButton>
-                </ContainerContent>
+                </ContainerContent>}
+
+
             </Container>
         );
     }
