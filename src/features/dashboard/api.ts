@@ -9,10 +9,10 @@ export const createOrganisation = async (
 ) => {
   try {
     const data = await http(`${API_BASE_URL}/api/admin`, {
-      method: 'POST',
+      method: 'PUT',
       body: JSON.stringify({
         name,
-        position: [{latitude: positionLat , longitude: positionLon }],
+        position: [{latitude: Number(positionLat) , longitude: Number(positionLon) }],
         description: [ description ],
       })
     });
