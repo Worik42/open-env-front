@@ -19,6 +19,12 @@ const Container = styled('div')`
 `;
 
 const Map = styled('div')`
+    width: 100%;
+    height: 400px;
+    padding: 5px;
+    margin-top: 20px;
+    border: solid 1px gray;
+    border-radius: 5px;   
 `
 
 const FormContainer = styled('div')`
@@ -56,6 +62,21 @@ class Dashboard extends Component<IDashboard> {
 
     public componentDidMount() {
         getPositions().then((res) => {
+            console.log(res.body);
+
+            var org = [[55.348800, 86.128080], [55.348880, 86.119850]];
+            ymaps.ready(function () {
+                var myMap = new ymaps.Map('map', {
+                    center: [55.349759, 86.120780],
+                    zoom: 15
+                }, {searchControlProvider: 'yandex#search'});
+
+                for (var i = 0; i < org.length; i++) {
+                    var pl = new ymaps.Placemark(org[i]);
+                    myMap.geoObjects.add(pl);
+                }
+
+            });
 
         })
     }
@@ -134,12 +155,12 @@ class Dashboard extends Component<IDashboard> {
                     <SubmitButton onClick={this.submit} variant="outlined">
                         Создать
                     </SubmitButton>
-                    <Map id="map">
-
-                    </Map>
                 </ContainerContent>
                 }
-                {this.state.selectedItem === 0 && <ContainerContent></ContainerContent>}
+                {this.state.selectedItem === 0 && <ContainerContent>
+                    <Map id="map">
+                    </Map>
+                </ContainerContent>}
 
 
             </Container>
