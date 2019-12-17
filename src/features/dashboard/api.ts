@@ -1,11 +1,11 @@
-import { http } from '../../services';
-import { API_BASE_URL } from '../../services/http';
+import {http} from '../../services';
+import {API_BASE_URL} from '../../services/http';
 
 export const createOrganisation = async (
-  name: string,
-  positionLat: number,
-  positionLon: number,
-  description: string,
+    name: string,
+    positionLat: number,
+    positionLon: number,
+    description: string,
 ) => {
   try {
     const data = await http(`${API_BASE_URL}/api/admin`, {
@@ -22,3 +22,12 @@ export const createOrganisation = async (
     throw error;
   }
 };
+
+export const getPositions = async () => {
+  try {
+    const data = await http(`${API_BASE_URL}/api/map`)
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import styled from '@emotion/styled';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,10 +13,13 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import { createOrganisation } from '../api'
+import {createOrganisation, getPositions} from '../api'
 
 const Container = styled('div')`
 `;
+
+const Map = styled('div')`
+`
 
 const FormContainer = styled('div')`
     display: flex;
@@ -51,15 +54,20 @@ class Dashboard extends Component<IDashboard> {
         selectedItem: 0
     };
 
-    public componentDidMount() { }
+    public componentDidMount() {
+        getPositions().then((res) => {
+
+        })
+    }
 
     private submit = () => {
-        const { desc, lat, lon, name } = this.state
-        createOrganisation(name, lat, lon, desc).then((res) => { })
+        const {desc, lat, lon, name} = this.state
+        createOrganisation(name, lat, lon, desc).then((res) => {
+        })
     }
 
     private handlerName = (value: any) => {
-        this.setState({ name: value.target.value })
+        this.setState({name: value.target.value})
     }
 
     private handlerPositionLat = (value: any) => {
@@ -112,16 +120,23 @@ class Dashboard extends Component<IDashboard> {
                 {this.state.selectedItem === 1 && <ContainerContent>
                     <Typography> Создание организации:</Typography>
                     <FormContainer>
-                        <TextField id="standard-basic" onChange={this.handlerName} label="Введите название организации/мероприятия" variant="standard" />
+                        <TextField id="standard-basic" onChange={this.handlerName}
+                                   label="Введите название организации/мероприятия" variant="standard"/>
 
-                        <TextField id="filled-basic" onChange={this.handlerPositionLat} label="Введите широту" variant="standard" />
+                        <TextField id="filled-basic" onChange={this.handlerPositionLat} label="Введите широту"
+                                   variant="standard"/>
 
-                        <TextField id="outlined-basic" onChange={this.handlerPositionLon} label="Введите долготу" variant="standard" />
-                        <TextField id="outlined-basic" onChange={this.handlerDescription} label="Введите описание организации/мероприятия" variant="standard" />
+                        <TextField id="outlined-basic" onChange={this.handlerPositionLon} label="Введите долготу"
+                                   variant="standard"/>
+                        <TextField id="outlined-basic" onChange={this.handlerDescription}
+                                   label="Введите описание организации/мероприятия" variant="standard"/>
                     </FormContainer>
                     <SubmitButton onClick={this.submit} variant="outlined">
                         Создать
-                </SubmitButton>
+                    </SubmitButton>
+                    <Map id="map">
+
+                    </Map>
                 </ContainerContent>
                 }
                 {this.state.selectedItem === 0 && <ContainerContent></ContainerContent>}
