@@ -63,15 +63,15 @@ class Dashboard extends Component<IDashboard> {
     }
 
     private handlerPositionLat = (value: any) => {
-        this.setState({ name: value.target.value })
+        this.setState({ lat: value.target.value })
     }
 
     private handlerPositionLon = (value: any) => {
-        this.setState({ name: value.target.value })
+        this.setState({ lon: value.target.value })
     }
 
     private handlerDescription = (value: any) => {
-        this.setState({ name: value.target.value })
+        this.setState({ desc: value.target.value })
     }
 
     private closeDrawer = () => {
