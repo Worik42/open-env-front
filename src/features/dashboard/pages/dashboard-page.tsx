@@ -59,26 +59,26 @@ class Dashboard extends Component<IDashboard> {
         isOpenDrawer: false,
         selectedItem: 0
     };
-
-    public componentDidMount() {
+    private requestPositions = () => {
         getPositions().then((res) => {
-            console.log(res.body);
-
-            var org = [[55.348800, 86.128080], [55.348880, 86.119850]];
             ymaps.ready(function () {
                 var myMap = new ymaps.Map('map', {
                     center: [55.349759, 86.120780],
                     zoom: 15
                 }, {searchControlProvider: 'yandex#search'});
 
-                for (var i = 0; i < org.length; i++) {
-                    var pl = new ymaps.Placemark(org[i]);
-                    myMap.geoObjects.add(pl);
-                }
-
+                res.body.map((item: any) => {
+                    item.coordinate.map((coord: any) => {
+                        const pl = new ymaps.Placemark([coord.latitude, coord.longitude]);
+                        myMap.geoObjects.add(pl);
+                    })
+                });
             });
 
         })
+    }
+    public componentDidMount() {
+        this.requestPositions();
     }
 
     private submit = () => {
@@ -112,7 +112,9 @@ class Dashboard extends Component<IDashboard> {
     }
 
     private handleChangeMenu = (id: number) => {
-        this.setState({ selectedItem: id })
+        this.requestPositions();
+        this.setState({selectedItem: id})
+
     }
 
 
