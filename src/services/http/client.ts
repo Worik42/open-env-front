@@ -21,7 +21,7 @@ export async function fetchWithToken<T>(
   if (token !== null) {
     configWithToken = Object.assign({}, config, {
       headers: {
-        Authorization: `Bearer ${token}`
+        "x-auth-token": `${token}`
       }
     });
   }
