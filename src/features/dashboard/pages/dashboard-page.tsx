@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
@@ -13,7 +13,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import {createOrganisation, getPositions} from '../api'
+import { createOrganisation, getPositions } from '../api'
+import {clearToken} from '../../../services/http/storage'
+import { setAuth } from '../../common/actions';
 
 const Container = styled('div')`
 `;
@@ -48,6 +50,7 @@ margin-top: 25px !important;
 `
 
 declare interface IDashboard {
+    setAuth: any;
 }
 
 class Dashboard extends Component<IDashboard> {
@@ -65,7 +68,7 @@ class Dashboard extends Component<IDashboard> {
                 var myMap = new ymaps.Map('map', {
                     center: [55.349759, 86.120780],
                     zoom: 15
-                }, {searchControlProvider: 'yandex#search'});
+                }, { searchControlProvider: 'yandex#search' });
 
                 res.body.map((item: any) => {
                     item.coordinate.map((coord: any) => {
@@ -82,13 +85,14 @@ class Dashboard extends Component<IDashboard> {
     }
 
     private submit = () => {
-        const {desc, lat, lon, name} = this.state
+        const { desc, lat, lon, name } = this.state
         createOrganisation(name, lat, lon, desc).then((res) => {
+            this.handleChangeMenu(0)
         })
     }
 
     private handlerName = (value: any) => {
-        this.setState({name: value.target.value})
+        this.setState({ name: value.target.value })
     }
 
     private handlerPositionLat = (value: any) => {
@@ -113,8 +117,13 @@ class Dashboard extends Component<IDashboard> {
 
     private handleChangeMenu = (id: number) => {
         this.requestPositions();
-        this.setState({selectedItem: id})
+        this.setState({ selectedItem: id })
 
+    }
+
+    private logOut = () => {
+        clearToken("access")
+        this.props.setAuth(false)
     }
 
 
@@ -129,6 +138,7 @@ class Dashboard extends Component<IDashboard> {
                         <Typography variant="h6">
                             OpenEnv
                         </Typography>
+                        <Button color="inherit" onClick={this.logOut} >Выйти</Button>
                     </Toolbar>
                 </AppBar>
                 <Drawer open={this.state.isOpenDrawer} onClose={this.closeDrawer}>
@@ -144,15 +154,15 @@ class Dashboard extends Component<IDashboard> {
                     <Typography> Создание организации:</Typography>
                     <FormContainer>
                         <TextField id="standard-basic" onChange={this.handlerName}
-                                   label="Введите название организации/мероприятия" variant="standard"/>
+                            label="Введите название организации/мероприятия" variant="standard" />
 
                         <TextField id="filled-basic" onChange={this.handlerPositionLat} label="Введите широту"
-                                   variant="standard"/>
+                            variant="standard" />
 
                         <TextField id="outlined-basic" onChange={this.handlerPositionLon} label="Введите долготу"
-                                   variant="standard"/>
+                            variant="standard" />
                         <TextField id="outlined-basic" onChange={this.handlerDescription}
-                                   label="Введите описание организации/мероприятия" variant="standard"/>
+                            label="Введите описание организации/мероприятия" variant="standard" />
                     </FormContainer>
                     <SubmitButton onClick={this.submit} variant="outlined">
                         Создать
@@ -172,6 +182,7 @@ class Dashboard extends Component<IDashboard> {
 const mapStateToProps = (state: any) => ({});
 
 const mapDispatchToProps = {
+    setAuth
 };
 
 export default connect(
